@@ -96,12 +96,26 @@ git push
    custom domain**.
 2. Enter `deskduck.ca` and confirm. Because Cloudflare already manages the domain
    (Step 2), it adds the needed DNS record automatically.
-3. Add a second custom domain: `www.deskduck.ca`.
-   - The included `_redirects` file will forward `www.deskduck.ca` → `deskduck.ca`
-     so you have one clean canonical address.
-4. SSL (the padlock / https) is issued automatically — give it a few minutes.
+3. SSL (the padlock / https) is issued automatically — give it a few minutes.
 
 Once active, **https://deskduck.ca** shows your site. 🎉
+
+### Send www.deskduck.ca to the clean address
+
+So that `www.deskduck.ca` also works and lands on the canonical `deskduck.ca`, add a
+redirect rule (the same mechanism used for the other domains in Step 5):
+
+1. Select **deskduck.ca** in the Cloudflare dashboard → **Rules → Redirect Rules →
+   Create rule**.
+2. Configure:
+   - **Rule name:** `www to apex`
+   - **When incoming requests match... Custom filter expression:**
+     Field `Hostname`, Operator `equals`, Value `www.deskduck.ca`
+   - **Then... Type:** Dynamic ·
+     **Expression:** `concat("https://deskduck.ca", http.request.uri.path)` ·
+     **Status:** `301` · enable **Preserve query string**.
+3. **Deploy.** Make sure a proxied DNS record exists for `www` (DNS tab → add
+   `CNAME` `www` → `deskduck.ca`, proxy **on**) so the name resolves.
 
 ---
 
