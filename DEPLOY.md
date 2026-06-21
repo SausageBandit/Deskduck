@@ -51,7 +51,7 @@ auto-deploys (Step 3b).
 
    ```bash
    cd "path/to/Duck Website"
-   git remote add origin https://github.com/YOUR_USERNAME/deskduck.git
+   git remote add origin https://github.com/SausageBandit/deskduck.git
    git push -u origin main
    ```
 
