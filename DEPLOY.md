@@ -39,23 +39,54 @@ three now and let them activate while you do the rest.)
 
 ---
 
-## Step 3 — Deploy the site to Cloudflare Pages
+## Step 3 — Push the site to GitHub
 
-The simplest path is **direct upload** (no GitHub needed):
+The folder is already a Git repository with your first commit made. You just need to
+create an empty repo on GitHub and push to it. After this, every change you push
+auto-deploys (Step 3b).
 
-1. In the dashboard sidebar, go to **Workers & Pages → Create → Pages →
-   Upload assets**.
-2. Name the project `deskduck` (this just creates a temporary URL like
-   `deskduck.pages.dev`).
-3. Drag the **contents** of this folder into the upload box — that means
-   `index.html`, the `assets` folder, `robots.txt`, `sitemap.xml`, and `_redirects`.
-   ⚠️ Upload the files themselves, not the enclosing folder, so `index.html` sits at
-   the top level.
-4. Click **Deploy site**. In a few seconds you'll get a live `*.pages.dev` URL —
+1. Go to https://github.com/new and create a repository named `deskduck`.
+   **Leave it empty** — no README, no .gitignore, no license (you already have those).
+2. GitHub shows you the repo URL. In a terminal, from this folder, run:
+
+   ```bash
+   cd "path/to/Duck Website"
+   git remote add origin https://github.com/YOUR_USERNAME/deskduck.git
+   git push -u origin main
+   ```
+
+   (Swap in your GitHub username. GitHub will ask you to log in or paste a personal
+   access token the first time.)
+3. Refresh the GitHub page — all the files should now be there.
+
+> Already use SSH with GitHub? Use the SSH URL instead:
+> `git remote add origin git@github.com:YOUR_USERNAME/deskduck.git`
+
+---
+
+## Step 3b — Connect the GitHub repo to Cloudflare Pages
+
+1. In Cloudflare: **Workers & Pages → Create → Pages → Connect to Git**.
+2. Authorize Cloudflare to access your GitHub, then pick the `deskduck` repo.
+3. Build settings — this is a plain static site with no build step, so:
+   - **Framework preset:** None
+   - **Build command:** *(leave blank)*
+   - **Build output directory:** `/`
+4. Click **Save and Deploy**. You'll get a live `*.pages.dev` URL in a few seconds —
    open it and confirm the page looks right.
 
-> Whenever you change the site later, come back here and re-upload to create a new
-> deployment.
+From now on, **every `git push` to `main` automatically rebuilds and redeploys** the
+site. To update it:
+
+```bash
+git add -A
+git commit -m "Describe your change"
+git push
+```
+
+> Prefer not to use GitHub? You can instead drag the folder's contents into
+> **Pages → Upload assets** for a one-off manual deploy. But the Git connection above
+> is what gives you painless future updates.
 
 ---
 
@@ -122,8 +153,8 @@ land on `https://deskduck.ca`.
   allowed domains (in Formspree's form settings) once you're live, to stop spam from
   other sites using your endpoint.
 - **SSL is automatic and free** on Cloudflare — no certificates to buy or renew.
-- **To update the site**, edit the files here and re-upload in Step 3. The domains
-  and redirects stay put.
+- **To update the site**, edit the files here, then `git add -A && git commit -m "..."
+  && git push`. Cloudflare redeploys automatically. The domains and redirects stay put.
 - **Why deskduck.ca as primary:** it's the cleanest match to the brand. The `.com`
   and `quackers.ca` still "work" — they just forward — so you capture anyone who
   types those instead.
