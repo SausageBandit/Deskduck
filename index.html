@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DeskDuck — a duck that quacks when you've doomscrolled too long</title>
+<meta name="description" content="DeskDuck is a small physical duck for your desk that quacks out loud when you spend too long on distracting apps. Coming soon. Join the waitlist." />
+<link rel="canonical" href="https://deskduck.ca/" />
+
+<!-- Open Graph (nice link previews) -->
+<meta property="og:title" content="DeskDuck — the duck that quacks when you've scrolled too long" />
+<meta property="og:description" content="A real, audible nudge to put your phone down, not just another notification. Coming soon. Join the waitlist." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://deskduck.ca/" />
+
+<link rel="icon" type="image/svg+xml" href="assets/deskduck-icon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============================================================
+     DeskDuck landing page — single file, no dependencies
+     Brand accent: amber #F5A623
+     ============================================================ */
+  :root{
+    --amber:#F5A623;
+    --amber-deep:#E8890C;
+    --amber-soft:#FFF4E1;
+    --ink:#2b2620;
+    --ink-soft:#6b6359;
+    --cream:#FFFBF4;
+    --white:#ffffff;
+    --line:#f0e7d8;
+    --radius:18px;
+    --shadow:0 10px 40px -12px rgba(120,80,10,.22);
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif;line-height:1.12;letter-spacing:-.01em;font-weight:600}
+  a{color:inherit}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .accent{color:var(--amber-deep)}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-block;border:0;cursor:pointer;font-weight:600;font-size:1rem;
+    padding:14px 26px;border-radius:999px;text-decoration:none;transition:.18s ease;
+  }
+  .btn-primary{background:var(--amber);color:#3a2a05;box-shadow:0 8px 20px -6px rgba(245,166,35,.6)}
+  .btn-primary:hover{background:var(--amber-deep);color:#fff;transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber-deep)}
+
+  /* ---------- nav ---------- */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,251,244,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:700;font-size:1.25rem;text-decoration:none}
+  .brand img{width:34px;height:34px;border-radius:9px}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{text-decoration:none;color:var(--ink-soft);font-size:.93rem;font-weight:500}
+  .nav-links a:hover{color:var(--amber-deep)}
+  .nav-links .btn{padding:9px 18px;font-size:.9rem}
+  @media(max-width:720px){.nav-links a:not(.btn){display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;overflow:hidden;background:
+      radial-gradient(900px 500px at 80% -10%, #FFE9C2 0%, rgba(255,233,194,0) 60%),
+      var(--cream);
+    padding:72px 0 80px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:var(--amber-soft);color:var(--amber-deep);
+    font-weight:600;font-size:.82rem;padding:7px 14px;border-radius:999px;border:1px solid #fbe4bd}
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--amber-deep);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero h1{font-size:clamp(2.3rem,5.2vw,3.7rem);margin:20px 0 16px}
+  .hero p.lead{font-size:1.18rem;color:var(--ink-soft);max-width:30em;margin-bottom:28px}
+
+  /* ---------- hero signup form ---------- */
+  .signup{max-width:480px}
+  .signup-row{display:flex;gap:10px}
+  .signup input[type=email]{
+    flex:1;min-width:0;padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;
+    font-size:1rem;font-family:inherit;background:#fff;transition:.15s}
+  .signup input[type=email]:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 4px rgba(245,166,35,.15)}
+  .signup .btn{white-space:nowrap}
+  .signup .note{font-size:.82rem;color:var(--ink-soft);margin-top:10px}
+  .form-msg{font-size:.92rem;margin-top:12px;font-weight:500;display:none}
+  .form-msg.ok{display:block;color:#1f7a3d}
+  .form-msg.err{display:block;color:#c0392b}
+  @media(max-width:520px){.signup-row{flex-direction:column}.signup .btn{width:100%}}
+
+  /* ---------- hero art ---------- */
+  .hero-art{position:relative;display:flex;justify-content:center}
+  .duck-card{
+    width:min(360px,80%);aspect-ratio:1;background:var(--amber);border-radius:42px;
+    display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);position:relative}
+  .duck-card img{width:62%}
+  .quack-bubble{
+    position:absolute;top:6%;right:-6%;background:#fff;border:1.5px solid var(--line);
+    padding:10px 16px;border-radius:16px 16px 16px 4px;font-family:'Fraunces',serif;font-weight:600;
+    box-shadow:var(--shadow);font-size:1.05rem;animation:bob 3s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  .placeholder-tag{position:absolute;bottom:-30px;left:0;right:0;text-align:center;font-size:.74rem;color:var(--ink-soft);opacity:.7}
+
+  /* ---------- sections ---------- */
+  section{padding:84px 0}
+  .section-head{text-align:center;max-width:34em;margin:0 auto 52px}
+  .section-head h2{font-size:clamp(1.8rem,3.8vw,2.5rem);margin-bottom:14px}
+  .section-head p{color:var(--ink-soft);font-size:1.08rem}
+  .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:700;color:var(--amber-deep);font-family:'Inter';margin-bottom:12px}
+
+  .alt{background:var(--amber-soft)}
+
+  /* ---------- how it works ---------- */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;counter-reset:step}
+  .step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;position:relative}
+  .step .num{counter-increment:step;font-family:'Fraunces',serif;font-weight:700;color:var(--amber);
+    font-size:1.6rem;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .step .num::before{content:counter(step);display:flex;align-items:center;justify-content:center;
+    width:38px;height:38px;background:var(--amber-soft);border-radius:11px;font-size:1.1rem;color:var(--amber-deep)}
+  .step h3{font-size:1.12rem;margin-bottom:6px}
+  .step p{font-size:.95rem;color:var(--ink-soft)}
+  .step.bonus{background:linear-gradient(180deg,#fff, #FFF8EC)}
+  .step.bonus .num::before{background:var(--amber);color:#fff}
+  .bonus-tag{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--amber-deep);background:var(--amber-soft);padding:3px 8px;border-radius:6px;margin-bottom:8px}
+  @media(max-width:860px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.steps{grid-template-columns:1fr}}
+
+  /* ---------- features ---------- */
+  .features{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .feature{display:flex;gap:16px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+  .feature .ic{flex:none;width:48px;height:48px;border-radius:12px;background:var(--amber-soft);
+    display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+  .feature h3{font-size:1.15rem;margin-bottom:5px}
+  .feature p{font-size:.96rem;color:var(--ink-soft)}
+  @media(max-width:720px){.features{grid-template-columns:1fr}}
+
+  /* ---------- why physical ---------- */
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .compare{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .compare .row{display:grid;grid-template-columns:1fr 1fr}
+  .compare .row > div{padding:18px 20px;border-bottom:1px solid var(--line)}
+  .compare .row > div:first-child{border-right:1px solid var(--line)}
+  .compare .head{font-weight:700;background:#faf6ee;font-family:'Fraunces',serif}
+  .compare .x{color:var(--ink-soft);font-size:.95rem}
+  .compare .check{color:var(--amber-deep);font-weight:600;font-size:.95rem}
+  .why-text h2{font-size:clamp(1.8rem,3.6vw,2.4rem);margin-bottom:16px}
+  .why-text p{color:var(--ink-soft);margin-bottom:14px;font-size:1.05rem}
+  @media(max-width:780px){.why-grid{grid-template-columns:1fr}}
+
+  /* ---------- CTA band ---------- */
+  .cta-band{background:var(--amber);text-align:center;border-radius:28px;padding:56px 28px;box-shadow:var(--shadow)}
+  .cta-band h2{color:#3a2a05;font-size:clamp(1.9rem,4vw,2.6rem);margin-bottom:12px}
+  .cta-band p{color:#5a4209;font-size:1.1rem;margin-bottom:26px;max-width:30em;margin-left:auto;margin-right:auto}
+  .cta-band .signup{margin:0 auto}
+  .cta-band input[type=email]{border-color:#f6d6a0}
+  .cta-band .btn-primary{background:#3a2a05;color:#fff;box-shadow:none}
+  .cta-band .btn-primary:hover{background:#000}
+  .cta-band .note{color:#5a4209}
+
+  /* ---------- FAQ ---------- */
+  .faq{max-width:760px;margin:0 auto}
+  details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 22px;margin-bottom:12px}
+  details[open]{box-shadow:var(--shadow)}
+  summary{cursor:pointer;font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;padding:18px 0;
+    list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:1.5rem;color:var(--amber-deep);font-family:'Inter';transition:.2s}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{color:var(--ink-soft);padding:0 0 20px;font-size:1rem}
+
+  /* ---------- about ---------- */
+  .about{background:var(--amber-soft)}
+  .about-card{max-width:720px;margin:0 auto;text-align:center}
+  .about-card .maker{width:74px;height:74px;border-radius:50%;background:var(--amber);margin:0 auto 22px;
+    display:flex;align-items:center;justify-content:center;padding:10px;box-shadow:var(--shadow)}
+  .about-card h2{font-size:clamp(1.7rem,3.4vw,2.2rem);margin-bottom:18px}
+  .about-card p{color:var(--ink-soft);font-size:1.08rem;margin-bottom:14px}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:40px 0;text-align:center;color:var(--ink-soft);font-size:.9rem}
+  footer .brand{justify-content:center;margin-bottom:12px;color:var(--ink)}
+  footer a{color:var(--amber-deep);text-decoration:none}
+
+  /* build-note: visible only to you while editing locally; safe to delete */
+  .build-note{background:#fffbe6;border:1px dashed #e6c34d;color:#7a5c00;font-size:.8rem;
+    padding:8px 14px;border-radius:8px;margin:0 auto 0;max-width:var(--maxw)}
+</style>
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <!-- ▶ swap assets/deskduck-icon.svg for your real icon -->
+      <img src="assets/deskduck-icon.svg" alt="DeskDuck" />
+      DeskDuck
+    </a>
+    <nav class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#why">Why a duck</a>
+      <a href="#faq">FAQ</a>
+      <a href="#waitlist" class="btn btn-primary">Join the waitlist</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="pill"><span class="dot"></span> Coming soon · we're building them now</span>
+      <h1>A duck that <span class="accent">quacks</span> when you've doomscrolled too long.</h1>
+      <p class="lead">DeskDuck is a little physical duck that sits right there on your desk, with you. It watches your screen time on the apps you choose, and when you go over, it quacks at you, a disappointed little nudge to put the phone down and get back to what you were doing.</p>
+
+      <!-- ===================== HERO SIGNUP FORM ===================== -->
+      <form class="signup deskduck-form" action="https://formspree.io/f/mpqgaoyq" method="POST" novalidate>
+        <div class="signup-row">
+          <input type="email" name="email" placeholder="you@email.com" aria-label="Email address" required />
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+          <input type="hidden" name="_source" value="hero" />
+          <button type="submit" class="btn btn-primary">Join the waitlist</button>
+        </div>
+        <p class="note">Be the first to know when your Duck is ready. No spam, just one quack when it's time.</p>
+        <p class="form-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <div class="hero-art">
+      <div class="duck-card">
+        <span class="quack-bubble">Quack! 📵</span>
+        <!-- ▶ placeholder duck — replace with your real mascot/render -->
+        <img src="assets/deskduck-duck.svg" alt="DeskDuck — placeholder duck illustration" />
+        <span class="placeholder-tag">↑ placeholder art, your branding goes here</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= HOW IT WORKS ======================= -->
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2>Set it once. Let the duck do the nagging.</h2>
+      <p>No willpower required, just a small bird with excellent timing.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num"></div>
+        <h3>Pick your apps</h3>
+        <p>Choose the time-sinks you want to keep in check, like Instagram, TikTok, YouTube, and the rest.</p>
+      </div>
+      <div class="step">
+        <div class="num"></div>
+        <h3>Set a time limit</h3>
+        <p>Decide how long is "too long" for each app. Ten minutes? An hour? You set the line.</p>
+      </div>
+      <div class="step">
+        <div class="num"></div>
+        <h3>Your duck quacks at you</h3>
+        <p>Cross the line and your DeskDuck quacks at you, right there on your desk, a disappointed little nudge to put the phone down and get back to it.</p>
+      </div>
+      <div class="step bonus">
+        <span class="bonus-tag">Bonus</span>
+        <div class="num"></div>
+        <h3>Quack a friend</h3>
+        <p>Send a warm little quack to someone you care about's duck, just to say you're thinking of them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= FEATURES ========================= -->
+<section id="features" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Features</p>
+      <h2>Small duck. Surprisingly capable.</h2>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="ic">📊</div>
+        <div>
+          <h3>Per-app screen time</h3>
+          <p>Track time on each app individually through the companion phone app, not one blunt daily total.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ic">⏱️</div>
+        <div>
+          <h3>Custom thresholds</h3>
+          <p>A different limit for every app. Strict on the doomscroll feeds, lenient where you want it.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ic">🔊</div>
+        <div>
+          <h3>Real, audible quacks</h3>
+          <p>An actual quack with character, not a flat buzzer beep that fades into background noise.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ic">💛</div>
+        <div>
+          <h3>Send a quack to a friend</h3>
+          <p>Share your duck's code with people you trust and send each other little "thinking of you" quacks, a warmer tone, just for fun.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= WHY A DUCK ======================= -->
+<section id="why">
+  <div class="wrap why-grid">
+    <div class="why-text">
+      <p class="eyebrow">Why a physical duck</p>
+      <h2>You can ignore a notification. You can't ignore a duck.</h2>
+      <p>Your phone's own screen-time tools live <em>inside</em> the phone, the exact thing you're trying to put down. A banner slides in, you swipe it away in half a second, and you're back in the feed before you've even registered it.</p>
+      <p>DeskDuck sits right there on your desk, looking at you. Go over your limit and it quacks out loud, a real sound in the real room, clearly a little disappointed in you. You can't swipe a duck away, so it just keeps gently quacking until you put the phone down and get back to what you were doing. That tiny bit of real-world friction is the whole point.</p>
+    </div>
+    <div class="compare">
+      <div class="row">
+        <div class="head">Phone's built-in limits</div>
+        <div class="head">DeskDuck</div>
+      </div>
+      <div class="row">
+        <div class="x">A banner you swipe away in half a second</div>
+        <div class="check">A quack you actually have to deal with</div>
+      </div>
+      <div class="row">
+        <div class="x">Lives inside the app you're stuck in</div>
+        <div class="check">Sits on your desk, looking right at you</div>
+      </div>
+      <div class="row">
+        <div class="x">Silent, private, easy to dismiss</div>
+        <div class="check">Quacks out loud, right at you, until you stop</div>
+      </div>
+      <div class="row">
+        <div class="x">Just another grey notification</div>
+        <div class="check">A disappointed little duck you'll actually listen to</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= WAITLIST CTA ========================= -->
+<section id="waitlist">
+  <div class="wrap">
+    <div class="cta-band">
+      <h2>Want one on your desk?</h2>
+      <p>DeskDuck is in development, not for sale just yet. Join the waitlist and you'll be the first to know when your Duck is ready.</p>
+
+      <!-- ===================== WAITLIST SIGNUP FORM ===================== -->
+      <form class="signup deskduck-form" action="https://formspree.io/f/mpqgaoyq" method="POST" novalidate>
+        <div class="signup-row">
+          <input type="email" name="email" placeholder="you@email.com" aria-label="Email address" required />
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+          <input type="hidden" name="_source" value="waitlist-cta" />
+          <button type="submit" class="btn btn-primary">Quack me when it's ready</button>
+        </div>
+        <p class="note">Be one of the first to get DeskDuck on your desk. 🧡</p>
+        <p class="form-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FAQ ============================ -->
+<section id="faq" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">FAQ</p>
+      <h2>The honest answers</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>When can I buy one?</summary>
+        <p>DeskDuck is still in development. There's a working prototype, but it isn't manufactured or for sale yet. Join the waitlist and you'll be among the first to know the moment that changes.</p>
+      </details>
+      <details>
+        <summary>What apps can I track?</summary>
+        <p>The usual time-sinks to start: Instagram, TikTok, YouTube, X, Facebook and Snapchat, with more planned. You pick which ones you want your duck watching.</p>
+      </details>
+      <details>
+        <summary>Does it need WiFi?</summary>
+        <p>Yes. DeskDuck connects over 2.4GHz WiFi (the standard band for this kind of device), which is what lets it pair with the app and receive quacks from friends.</p>
+      </details>
+      <details>
+        <summary>Is there a subscription? What will it cost?</summary>
+        <p>Pricing and any ongoing costs are still being decided, to be announced. We don't want to promise a number we can't stand behind yet. Join the waitlist and you'll hear it here first.</p>
+      </details>
+      <details>
+        <summary>How does sending a quack to a friend work?</summary>
+        <p>You share your duck's code with people you trust, and you can send each other little quacks. It's meant to be light and fun, a quick "thinking of you," not a serious messaging tool, so we're keeping it casual.</p>
+      </details>
+      <details>
+        <summary>Who's making this?</summary>
+        <p>DeskDuck is built by a small, dedicated team handling the hardware, the app, and everything in between. We're taking the time to get the quality right, so it's something you can actually rely on. There's more about us just below.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ABOUT ============================ -->
+<section id="about" class="about">
+  <div class="wrap about-card">
+    <div class="maker">
+      <!-- ▶ placeholder — drop in your team photo or real brand mark -->
+      <img src="assets/deskduck-duck.svg" alt="The DeskDuck team (placeholder)" />
+    </div>
+    <h2>Built by people who scroll too much</h2>
+    <p>DeskDuck started with a simple, slightly embarrassing problem: we knew exactly how much time we were losing to our phones, and knowing did absolutely nothing. The on-screen limits were too easy to dismiss. So we set out to build a duck that wouldn't let us.</p>
+    <p>We're a small team putting real care into getting this right, designing the hardware, building the app, and testing it until it's something we'd want on our own desks. We're not rushing it out the door, because we'd rather ship a duck that actually works and that we can stand behind. If the idea makes you smile, join the waitlist and we'll keep you posted.</p>
+    <p style="margin-top:22px"><a href="#waitlist" class="btn btn-primary">Join the waitlist</a></p>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="assets/deskduck-icon.svg" alt="DeskDuck" /> DeskDuck</a>
+    <p>A small duck for a big distraction. Coming soon.</p>
+    <p style="margin-top:8px;opacity:.7">© <span id="year"></span> DeskDuck · made with care</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* =========================================================
+     EMAIL SIGNUP — Formspree submission via fetch (AJAX)
+     so visitors stay on the page and see an inline thank-you.
+
+     ✓ CONNECTED to your Formspree endpoint: formspree.io/f/mpqgaoyq
+       (set in both <form action="..."> attributes above).
+       Submissions are emailed to you and stored in your Formspree
+       dashboard. To swap accounts later, change both action URLs.
+     ========================================================= */
+  const NOT_CONFIGURED = 'YOUR_FORM_ID';
+
+  document.querySelectorAll('.deskduck-form').forEach(function(form){
+    const msg = form.querySelector('.form-msg');
+    const btn = form.querySelector('button[type=submit]');
+
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      const email = form.querySelector('input[type=email]').value.trim();
+
+      // basic email sanity check
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+        showMsg('err', 'Hmm, that email doesn’t look quite right.');
+        return;
+      }
+
+      // guard: form not wired up yet
+      if(form.action.indexOf(NOT_CONFIGURED) !== -1){
+        showMsg('err', 'Signup isn’t connected yet, add your Formspree endpoint to go live. (See the comment in index.html.)');
+        console.warn('[DeskDuck] Replace YOUR_FORM_ID in the form action with your Formspree endpoint.');
+        return;
+      }
+
+      const original = btn.textContent;
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      try{
+        const res = await fetch(form.action, {
+          method:'POST',
+          body:new FormData(form),
+          headers:{'Accept':'application/json'}
+        });
+        if(res.ok){
+          form.reset();
+          showMsg('ok', '🦆 You’re on the list! We’ll quack when your Duck is ready.');
+        }else{
+          const data = await res.json().catch(()=>({}));
+          const err = data.errors ? data.errors.map(x=>x.message).join(', ') : 'Something went wrong.';
+          showMsg('err', err + ' Please try again.');
+        }
+      }catch(err){
+        showMsg('err', 'Network hiccup, please try again in a moment.');
+      }finally{
+        btn.textContent = original;
+        btn.disabled = false;
+      }
+    });
+
+    function showMsg(type, text){
+      msg.className = 'form-msg ' + type;
+      msg.textContent = text;
+    }
+  });
+</script>
+</body>
+</html>

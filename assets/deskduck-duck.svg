@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DeskDuck — duck only, transparent background (PLACEHOLDER)
+  A clean vector trace of your attached duck, for use on the amber
+  hero card and the "about" avatar.
+  ▶ Replace with your own real artwork when ready (keep the filename).
+-->
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DeskDuck duck">
+  <!-- tail curl (behind body) -->
+  <path d="M362 658 C300 684 294 746 340 754 C369 758 380 736 366 720"
+        fill="none" stroke="#E8890C" stroke-width="22" stroke-linecap="round"/>
+  <!-- webbed feet -->
+  <ellipse cx="438" cy="806" rx="108" ry="25" fill="#E8890C"/>
+  <ellipse cx="556" cy="812" rx="120" ry="25" fill="#EE9A1F"/>
+  <!-- body -->
+  <path fill="#ffffff" d="M480 235
+    C330 235 236 322 216 442
+    C166 472 150 542 166 622
+    C187 722 322 798 492 798
+    C668 798 782 716 786 600
+    C792 520 770 472 758 442
+    C746 322 630 235 480 235 Z"/>
+  <!-- beak -->
+  <path fill="#EE9A1F" d="M742 392
+    L856 410 C876 413 876 440 856 444
+    L748 466 C732 469 724 452 726 438
+    L730 408 C732 396 738 391 742 392 Z"/>
+  <!-- eye -->
+  <circle cx="632" cy="372" r="46" fill="#2b2b2b"/>
+  <circle cx="652" cy="354" r="14" fill="#ffffff"/>
+</svg>

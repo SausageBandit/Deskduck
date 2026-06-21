@@ -1,0 +1,3 @@
+# Cloudflare Pages redirects
+# Sends the www version to the clean apex domain (301 = permanent).
+https://www.deskduck.ca/*  https://deskduck.ca/:splat  301
