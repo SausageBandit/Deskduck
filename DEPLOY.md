@@ -8,7 +8,7 @@ three domains) and a free **Cloudflare** account. Total time: ~30–45 minutes, 
 which is waiting for DNS to update.
 
 The files to deploy are the contents of this folder:
-`index.html`, `assets/`, `robots.txt`, `sitemap.xml`, `_redirects`.
+`index.html`, `assets/`, `robots.txt`, `sitemap.xml`.
 
 ---
 
