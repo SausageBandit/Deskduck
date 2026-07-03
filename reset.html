@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>DeskDuck — Reset / Reinstall Your Duck</title>
+<title>DeskDuck — Reset My Duck</title>
 <meta name="description" content="Reinstall your DeskDuck's software from your computer. Handy for first-time setup, fixing a buggy duck, or moving your duck to a new WiFi network." />
 <!-- Utility page for owners — kept out of search results. Remove if you want it indexed. -->
 <meta name="robots" content="noindex" />
@@ -13,12 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-<!-- =========================================================
-     ESP Web Tools — provides the <esp-web-install-button>.
-     Loaded from CDN. Only runs its flashing UI in browsers that
-     support Web Serial (desktop Chrome / Edge).
-     ========================================================= -->
-<script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js"></script>
+<!-- ESP Web Tools — provides the <esp-web-install-button> custom element. -->
+<script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 
 <style>
   :root{
@@ -49,14 +45,29 @@
 
   h1{font-family:'Fraunces',serif;font-weight:600;font-size:2rem;letter-spacing:-.01em;margin-bottom:10px}
   .lead{color:var(--ink-soft);font-size:1.08rem;margin-bottom:8px}
-
   h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;margin:32px 0 10px}
 
-  /* the reset action card */
   .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);
-    padding:26px;margin:26px 0;box-shadow:var(--shadow)}
+    padding:26px;margin:24px 0;box-shadow:var(--shadow)}
   .card p{color:var(--ink-soft);margin-bottom:14px}
   .card p.what{color:var(--ink)}
+  .card p:last-child{margin-bottom:0}
+
+  /* unsupported-browser message (shown above the button on phones/Safari/Firefox) */
+  #browser-warning{background:var(--amber-soft);border:1px solid #f0d9a8;border-radius:var(--radius);
+    padding:18px 22px;margin:24px 0;display:flex;gap:12px;align-items:flex-start}
+  #browser-warning .emoji{font-size:1.4rem;line-height:1.2}
+  #browser-warning p{margin:0;color:var(--ink)}
+  #browser-warning strong{color:var(--ink)}
+
+  /* the amber pill trigger (ESP Web Tools activate slot) */
+  .btn-wrap{text-align:center;margin:20px 0 8px}
+  .duck-btn{display:inline-block;border:0;cursor:pointer;font-family:inherit;font-weight:600;font-size:1.05rem;
+    padding:15px 30px;border-radius:999px;background:var(--amber);color:#3a2a05;
+    box-shadow:0 8px 20px -6px rgba(245,166,35,.6);transition:.18s}
+  .duck-btn:hover{background:var(--amber-deep);color:#fff;transform:translateY(-1px)}
+  .esp-msg{display:block;text-align:center;color:var(--ink-soft);font-size:.95rem;padding:6px 0}
+  .reassure{font-size:.92rem;color:var(--ink-soft);text-align:center;margin-top:6px}
 
   /* steps */
   ol.steps{margin:6px 0 0;padding-left:0;list-style:none;counter-reset:s}
@@ -65,26 +76,6 @@
   ol.steps li::before{content:counter(s);position:absolute;left:0;top:9px;
     width:30px;height:30px;background:var(--amber-soft);color:var(--amber-deep);
     border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem}
-
-  /* the amber pill button used for the flash trigger */
-  .duck-btn{display:inline-block;border:0;cursor:pointer;font-family:inherit;font-weight:600;font-size:1.05rem;
-    padding:15px 30px;border-radius:999px;background:var(--amber);color:#3a2a05;
-    box-shadow:0 8px 20px -6px rgba(245,166,35,.6);transition:.18s}
-  .duck-btn:hover{background:var(--amber-deep);color:#fff;transform:translateY(-1px)}
-
-  .btn-wrap{text-align:center;margin:22px 0 6px}
-  .reassure{font-size:.92rem;color:var(--ink-soft);text-align:center}
-
-  /* unsupported-browser message */
-  .notice{background:var(--amber-soft);border:1px solid #f0d9a8;border-radius:var(--radius);
-    padding:22px 24px;margin:26px 0}
-  .notice h2{margin-top:0}
-  .notice p{color:var(--ink);margin-bottom:0}
-  .notice .emoji{font-size:1.5rem}
-
-  /* by default: assume unsupported (safe). JS reveals the tool only when Web Serial works. */
-  #supported{display:none}
-  #unsupported{display:block}
 
   footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.9rem}
 </style>
@@ -96,61 +87,44 @@
   <a class="back" href="index.html">&larr; Back to home</a>
 </div>
 
-<h1>Reset &amp; reinstall your duck</h1>
+<h1>Reset my duck</h1>
 <p class="lead">This gives your DeskDuck a fresh copy of its software, straight from your computer. It's the fix-it button.</p>
 
-<!-- ========================= SUPPORTED PATH (desktop Chrome/Edge) ========================= -->
-<div id="supported">
-
-  <div class="card">
-    <p class="what"><strong>What this does:</strong> It reinstalls your duck's software from scratch, and clears the WiFi network your duck was connected to. Reach for it if your duck is acting buggy, or when you want to move your duck to a <strong>new WiFi network</strong> or a <strong>new home</strong>.</p>
-    <p>It's completely safe, and it won't change your duck's identity — your duck keeps its permanent ID. Afterwards you'll just open the DeskDuck app and set your duck up again like new, including entering your WiFi.</p>
-
-    <div class="btn-wrap">
-      <!-- =========================================================
-           ▶ FIRMWARE PLACEHOLDER
-           This button reads /firmware/manifest.json to know which
-           firmware to install. That manifest and the compiled .bin
-           file(s) it points to are PLACEHOLDERS right now — drop your
-           real ESP32 build into /firmware/ and update manifest.json.
-           (See /firmware/manifest.json for the exact spots to fill in.)
-           ========================================================= -->
-      <esp-web-install-button manifest="/firmware/manifest.json">
-        <button class="duck-btn" slot="activate">Reset My Duck</button>
-      </esp-web-install-button>
-    </div>
-    <p class="reassure">Keep your duck plugged in until it says it's done. 🦆</p>
-  </div>
-
-  <h2>How to do it, step by step</h2>
-  <ol class="steps">
-    <li>Use a <strong>laptop or desktop computer</strong> with the <strong>Chrome</strong> or <strong>Edge</strong> browser.</li>
-    <li>Plug your DeskDuck into the computer with a <strong>USB cable</strong>.</li>
-    <li>Click <strong>“Reset My Duck”</strong> above.</li>
-    <li>A small window will pop up asking you to pick a device. Choose the one that appears — it may be named something like <em>“USB Serial”</em> or <em>“CP210x.”</em></li>
-    <li>Wait for it to finish. <strong>Don't unplug your duck</strong> until it says it's done.</li>
-    <li>Open the <strong>DeskDuck app</strong> and set your duck up again like new, entering your WiFi.</li>
-  </ol>
+<!-- Friendly unsupported-browser message. Visible by default (safe for phones);
+     hidden by the script below only when the browser supports Web Serial. -->
+<div id="browser-warning">
+  <span class="emoji">💻</span>
+  <p>Resetting your duck needs a <strong>computer (not a phone)</strong> using <strong>Chrome</strong> or <strong>Edge</strong>. Please open this page there.</p>
 </div>
 
-<!-- ========================= UNSUPPORTED PATH (phones, Safari, Firefox) ========================= -->
-<div id="unsupported">
-  <div class="notice">
-    <p class="emoji">💻</p>
-    <h2>You'll need a computer for this part</h2>
-    <p>Resetting your duck needs a <strong>computer (not a phone)</strong> using the <strong>Chrome</strong> or <strong>Edge</strong> browser. Please open this page there to continue.</p>
-  </div>
+<div class="card">
+  <p class="what"><strong>What this does:</strong> It reinstalls your duck's software fresh, and clears the WiFi network your duck was on. Reach for it if your duck is acting buggy, or when you want to move your duck to a <strong>new WiFi network</strong> or a <strong>new home</strong>.</p>
+  <p>It's completely safe, and your duck keeps its permanent ID. Afterwards you'll just open the DeskDuck app and set your duck up again, entering your WiFi like new.</p>
 
-  <h2>What you'll do once you're on a computer</h2>
-  <ol class="steps">
-    <li>Open this page (<strong>deskduck.ca/reset</strong>) in <strong>Chrome</strong> or <strong>Edge</strong> on a laptop or desktop.</li>
-    <li>Plug your DeskDuck into the computer with a <strong>USB cable</strong>.</li>
-    <li>Click the <strong>“Reset My Duck”</strong> button that appears.</li>
-    <li>Pick your duck from the little pop-up (it may be named <em>“USB Serial”</em> or <em>“CP210x”</em>).</li>
-    <li>Wait for it to finish — don't unplug until it's done.</li>
-    <li>Open the DeskDuck app and set your duck up again, entering your WiFi.</li>
-  </ol>
+  <div class="btn-wrap">
+    <!-- ESP Web Tools install button.
+         erase-first = full chip erase before flashing, which wipes the saved WiFi. Do not remove.
+         Points at the real /firmware/manifest.json (and the deskduck-firmware.bin it references).
+         The <button slot="activate"> only relabels the trigger to "Reset My Duck".
+         In unsupported browsers ESP Web Tools hides that button and shows the <span slot="unsupported"> text instead. -->
+    <esp-web-install-button manifest="/firmware/manifest.json" erase-first>
+      <button class="duck-btn" slot="activate">Reset My Duck</button>
+      <span slot="unsupported" class="esp-msg">This browser can't reset your duck — please use desktop Chrome or Edge.</span>
+      <span slot="not-allowed" class="esp-msg">To reset your duck, this page needs to run over a secure (https) connection.</span>
+    </esp-web-install-button>
+  </div>
+  <p class="reassure">Keep your duck plugged in until it says it's done. 🦆</p>
 </div>
+
+<h2>How to do it, step by step</h2>
+<ol class="steps">
+  <li>Use a <strong>laptop or desktop computer</strong> with <strong>Chrome</strong> or <strong>Edge</strong> (this won't work on a phone).</li>
+  <li>Plug your DeskDuck into the computer with a <strong>USB cable</strong>.</li>
+  <li>Click <strong>“Reset My Duck”</strong> below.</li>
+  <li>When a small window pops up asking you to choose a device, pick the one that appears (it may be named something like <em>“USB Serial”</em> or <em>“CP210x”</em>).</li>
+  <li>Wait for it to finish — don't unplug until it says it's done.</li>
+  <li>Open the DeskDuck app and set your duck up again, entering your WiFi.</li>
+</ol>
 
 <footer>
   Resetting is safe and repeatable — you can do it as many times as you need. Your duck keeps its
@@ -159,18 +133,12 @@
 </footer>
 
 <script>
-  /* Show the reset tool ONLY in browsers that support Web Serial
-     (desktop Chrome / Edge). Everyone else — phones, Safari, Firefox —
-     keeps the friendly "use a computer" message and never sees a
-     button that couldn't work. */
-  (function () {
-    var hasWebSerial = 'serial' in navigator;
-    if (hasWebSerial) {
-      document.getElementById('supported').style.display = 'block';
-      document.getElementById('unsupported').style.display = 'none';
-    }
-    // else: leave the safe default (unsupported message visible).
-  })();
+  /* Web Serial only exists in desktop Chrome / Edge. When it's present we hide the
+     "use a computer" warning; on phones, Safari and Firefox the warning stays put and
+     ESP Web Tools shows its own unsupported state where the button would be. */
+  if ('serial' in navigator) {
+    document.getElementById('browser-warning').style.display = 'none';
+  }
 </script>
 </body>
 </html>
