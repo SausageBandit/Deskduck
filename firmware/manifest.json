@@ -1,0 +1,16 @@
+{
+  "_PLACEHOLDER_README": "THIS IS A PLACEHOLDER — the Reset page will not actually flash until you replace the values below with your real DeskDuck build. Replace 'version', set the correct 'chipFamily' for your board, and point 'path' at your compiled .bin file(s) placed in this /firmware/ folder. See firmware/README.md for details. Delete these underscore-prefixed keys once real values are in; ESP Web Tools ignores them, but they're only here as notes.",
+  "_KEEP": "new_install_prompt_erase is true on purpose — a full erase is what clears the duck's saved WiFi so it can be moved to a new network/home.",
+
+  "name": "DeskDuck",
+  "version": "0.0.0-PLACEHOLDER",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "REPLACE_WITH_YOUR_FIRMWARE.bin", "offset": 0 }
+      ]
+    }
+  ]
+}
