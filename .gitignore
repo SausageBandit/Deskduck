@@ -7,3 +7,10 @@ Thumbs.db
 
 # Local preview output (not part of the site)
 .preview/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
