@@ -85,6 +85,13 @@
   .hero h1{font-size:clamp(2.3rem,5.2vw,3.7rem);margin:20px 0 16px}
   .hero p.lead{font-size:1.18rem;color:var(--ink-soft);max-width:30em;margin-bottom:28px}
 
+  /* hero collapses to one column on phones — copy + form stay above the fold */
+  @media(max-width:820px){
+    .hero{padding:44px 0 72px}
+    .hero-grid{grid-template-columns:1fr;gap:44px}
+    .hero-art{margin-top:6px}
+  }
+
   /* ---------- hero signup form ---------- */
   .signup{max-width:480px}
   .signup-row{display:flex;gap:10px}
@@ -118,6 +125,10 @@
   .section-head h2{font-size:clamp(1.8rem,3.8vw,2.5rem);margin-bottom:14px}
   .section-head p{color:var(--ink-soft);font-size:1.08rem}
   .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:700;color:var(--amber-deep);font-family:'Inter';margin-bottom:12px}
+  @media(max-width:640px){
+    section{padding:60px 0}
+    .section-head{margin-bottom:36px}
+  }
 
   .alt{background:var(--amber-soft)}
 
@@ -222,9 +233,9 @@
 <section class="hero" id="top">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <span class="pill"><span class="dot"></span> Coming soon · we're building them now</span>
+      <span class="pill"><span class="dot"></span> Coming soon · now in development</span>
       <h1>A duck that <span class="accent">quacks</span> when you've doomscrolled too long.</h1>
-      <p class="lead">DeskDuck is a little physical duck that sits right there on your desk, with you. It watches your screen time on the apps you choose, and when you go over, it quacks at you, a disappointed little nudge to put the phone down and get back to what you were doing.</p>
+      <p class="lead">A little physical duck that sits on your desk and watches your screen time on the apps you choose. Go over your limit and it quacks — out loud, mildly disappointed — until you put the phone down.</p>
 
       <!-- ===================== HERO SIGNUP FORM ===================== -->
       <form class="signup deskduck-form" action="https://formspree.io/f/mpqgaoyq" method="POST" novalidate>
@@ -242,8 +253,9 @@
     <div class="hero-art">
       <div class="duck-card">
         <span class="quack-bubble">Quack! 📵</span>
-        <!-- ▶ placeholder duck — replace with your real mascot/render -->
-        <img src="assets/deskduck-duck.svg" alt="DeskDuck — placeholder duck illustration" />
+        <!-- ▶ PRODUCT PHOTO GOES HERE — swap this illustration for a real photo/render when you have one -->
+        <img src="assets/deskduck-duck.svg" alt="DeskDuck — duck illustration" />
+        <span class="placeholder-tag">Artist's impression — real photos when it's ready</span>
       </div>
     </div>
   </div>
@@ -277,7 +289,7 @@
         <span class="bonus-tag">Bonus</span>
         <div class="num"></div>
         <h3>Quack a friend</h3>
-        <p>Send a warm little quack to someone you care about's duck, just to say you're thinking of them.</p>
+        <p>Send a warm little quack to a friend's duck, just to say you're thinking of them.</p>
       </div>
     </div>
   </div>
@@ -316,7 +328,7 @@
         <div class="ic">💛</div>
         <div>
           <h3>Send a quack to a friend</h3>
-          <p>Share your duck's code with people you trust and send each other little "thinking of you" quacks, a warmer tone, just for fun.</p>
+          <p>Share your duck's code with people you trust and send each other little "thinking of you" quacks. A warmer tone, just for fun.</p>
         </div>
       </div>
     </div>
@@ -362,7 +374,7 @@
   <div class="wrap">
     <div class="cta-band">
       <h2>Want one on your desk?</h2>
-      <p>It's not for sale just yet. Join the waitlist and you'll be the first to know when your Duck is ready.</p>
+      <p>DeskDuck isn't for sale just yet. The waitlist is where every update lands first — including the day that changes.</p>
 
       <!-- ===================== WAITLIST SIGNUP FORM ===================== -->
       <form class="signup deskduck-form" action="https://formspree.io/f/mpqgaoyq" method="POST" novalidate>
@@ -372,7 +384,7 @@
           <input type="hidden" name="_source" value="waitlist-cta" />
           <button type="submit" class="btn btn-primary">Quack me when it's ready</button>
         </div>
-        <p class="note">Be one of the first to get DeskDuck on your desk. 🧡</p>
+        <p class="note">Launch news, pricing, and updates — the waitlist hears it all first. 🧡</p>
         <p class="form-msg" role="status" aria-live="polite"></p>
       </form>
     </div>
@@ -389,7 +401,7 @@
     <div class="faq">
       <details>
         <summary>When can I buy one?</summary>
-        <p>DeskDuck is still in development. There's a working prototype, but it isn't manufactured or for sale yet. Join the waitlist and you'll be among the first to know the moment that changes.</p>
+        <p>DeskDuck is still in development. There's a working prototype, but it isn't manufactured or for sale yet. The waitlist is the first place that news will land.</p>
       </details>
       <details>
         <summary>What apps can I track?</summary>
@@ -401,15 +413,15 @@
       </details>
       <details>
         <summary>Is there a subscription? What will it cost?</summary>
-        <p>Pricing and any ongoing costs are still being decided, to be announced. We don't want to promise a number we can't stand behind yet. Join the waitlist and you'll hear it here first.</p>
+        <p>Pricing and any ongoing costs are still being decided, to be announced. We don't want to promise a number we can't stand behind yet — waitlist members will hear it first.</p>
       </details>
       <details>
         <summary>How does sending a quack to a friend work?</summary>
-        <p>You share your duck's code with people you trust, and you can send each other little quacks. It's meant to be light and fun, a quick "thinking of you," not a serious messaging tool, so we're keeping it casual.</p>
+        <p>You share your duck's code with people you trust, and you can send each other little quacks. It's meant to be light and fun, a quick "thinking of you," not a serious messaging tool — so it stays casual.</p>
       </details>
       <details>
         <summary>Who's making this?</summary>
-        <p>DeskDuck is built by a small, dedicated team handling the hardware, the app, and everything in between. We're taking the time to get the quality right, so it's something you can actually rely on. There's more about us just below.</p>
+        <p>DeskDuck is independently designed and built — the hardware, the app, and everything in between — with a focus on getting the quality right before anything ships. There's more about us just below.</p>
       </details>
     </div>
 
@@ -423,13 +435,13 @@
 <section id="about" class="about">
   <div class="wrap about-card">
     <div class="maker">
-      <!-- ▶ placeholder — drop in your team photo or real brand mark -->
-      <img src="assets/deskduck-duck.svg" alt="The DeskDuck team (placeholder)" />
+      <!-- ▶ PRODUCT/MAKER PHOTO GOES HERE — drop in a real photo when you have one -->
+      <img src="assets/deskduck-duck.svg" alt="DeskDuck mascot" />
     </div>
     <h2>Built by people who scroll too much</h2>
-    <p>DeskDuck started with a simple, slightly embarrassing problem: we knew exactly how much time we were losing to our phones, and knowing did absolutely nothing. The on-screen limits were too easy to dismiss. So we set out to build a duck that wouldn't let us.</p>
-    <p>We're a small team putting real care into getting this right, designing the hardware, building the app, and testing it until it's something we'd want on our own desks. We're not rushing it out the door, because we'd rather ship a duck that actually works and that we can stand behind. If the idea makes you smile, join the waitlist and we'll keep you posted.</p>
-    <p style="margin-top:22px"><a href="#waitlist" class="btn btn-primary">Join the waitlist</a></p>
+    <p>DeskDuck started with a simple, slightly embarrassing problem: we knew exactly how much time we were losing to our phones, and knowing did absolutely nothing. On-screen limits were too easy to swipe away. So we built a duck that wouldn't allow it.</p>
+    <p>We're putting real care into getting this right — designing the hardware, building the app, and testing until it's something we'd want on our own desks. Nothing ships until it actually works. If the idea makes you smile, join the waitlist and we'll keep you posted.</p>
+    <p style="margin-top:22px"><a href="#waitlist" class="btn btn-primary">Get on the list</a></p>
   </div>
 </section>
 
